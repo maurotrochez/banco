@@ -1,0 +1,109 @@
+package co.edu.uniajc.test.DAO;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import co.edu.uniajc.DAO.IRetirosDAO;
+import co.edu.uniajc.DAO.IUsuariosDAO;
+import co.edu.uniajc.model.Retiros;
+import co.edu.uniajc.model.RetirosId;
+import co.edu.uniajc.model.Usuarios;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/applicationContext.xml")
+public class TestRetiros {
+
+	@Autowired
+	IRetirosDAO ServiceRet;
+	
+	@Autowired
+	IUsuariosDAO ServiceUsr;
+	
+	@Test
+	public void testListAll() throws Exception{
+		List<Retiros> listRetiros = new ArrayList<Retiros>();
+		listRetiros = ServiceRet.consultarTodos();
+		Assert.assertNotNull(listRetiros);
+	}
+	
+	@Test
+	public void testSelectById() throws Exception{
+		Retiros ret;
+		RetirosId retId = new RetirosId(6L, "4008-5305-0035");
+		ret = ServiceRet.consultarPorId(retId);
+		Assert.assertNotNull("Retorna id", ret);
+	}
+	
+	@Before
+	public void clean() throws Exception{
+		Retiros tdoc;
+		RetirosId retId = new RetirosId(20L, "4008-5305-0035");
+		tdoc = ServiceRet.consultarPorId(retId);
+		if(tdoc != null)
+			ServiceRet.delete(tdoc);
+	}
+	
+	@Test
+	public void testInsert() throws Exception{
+		Retiros ret = new Retiros();
+		RetirosId retId = new RetirosId(21L, "4008-5305-0035");
+		Usuarios user = ServiceUsr.consultarPorId(15L);
+		
+		ret.setId(retId);
+		ret.setRetDescripcion("Description");
+		ret.setRetFecha(new Date());
+		ret.setRetValor(new BigDecimal(120000));
+		ret.setUsuarios(user);
+		
+		ServiceRet.save(ret);
+		
+		Retiros retsave;
+		retsave = ServiceRet.consultarPorId(retId);
+		
+		Assert.assertNotNull(retsave);
+	}
+	
+	@Test
+	public void testDelete() throws Exception{
+		Retiros ret = new Retiros();
+		RetirosId retId = new RetirosId(21L, "4008-5305-0035");
+		Usuarios user = ServiceUsr.consultarPorId(15L);
+		
+		ret.setId(retId);
+		ret.setRetDescripcion("Description para eliminar");
+		ret.setRetFecha(new Date());
+		ret.setRetValor(new BigDecimal(120000));
+		ret.setUsuarios(user);
+		
+		ServiceRet.save(ret);
+		
+		Retiros retirodelete;
+		retirodelete = ServiceRet.consultarPorId(retId);
+		ServiceRet.delete(retirodelete);
+		
+		Retiros tipoConfirmdelete;
+		tipoConfirmdelete = ServiceRet.consultarPorId(retId);
+		Assert.assertNull(tipoConfirmdelete);
+	}
+	
+	@Test
+	public void testUpdate() throws Exception{
+		RetirosId retId = new RetirosId(13L, "4008-5305-0070");
+		Retiros retU = ServiceRet.consultarPorId(retId);
+		retU.setRetDescripcion("Descripcion modificacda");
+		ServiceRet.update(retU);
+		
+		Retiros tipoConfirm = ServiceRet.consultarPorId(retId);
+		Assert.assertEquals("descripcion modificado", "Descripcion modificacda", tipoConfirm.getRetDescripcion());
+	}
+}
