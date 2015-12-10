@@ -3,12 +3,16 @@ package co.edu.uniajc.logic;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import co.edu.uniajc.DAO.ITiposUsuariosDAO;
 import co.edu.uniajc.model.TiposUsuarios;
 import co.edu.uniajc.utils.IValidate;
 
+@Service
+@Scope("singleton")
 public class TiposUsuariosLogic implements ITiposUsuariosLogic {
 
 	@Autowired
