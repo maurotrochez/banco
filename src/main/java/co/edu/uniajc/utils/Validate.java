@@ -1,6 +1,7 @@
 package co.edu.uniajc.utils;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Validate implements IValidate{
 	
@@ -32,5 +33,11 @@ public class Validate implements IValidate{
 		return false;
 	}
 	
+	@Override
+	public boolean validateDate(Date date) throws Exception {
+		if(date == null)
+			return true;
+		return false;
+	}
 }
 

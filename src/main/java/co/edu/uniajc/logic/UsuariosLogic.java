@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.uniajc.DAO.ITiposUsuariosDAO;
 import co.edu.uniajc.DAO.IUsuariosDAO;
-import co.edu.uniajc.model.Clientes;
 import co.edu.uniajc.model.TiposUsuarios;
 import co.edu.uniajc.model.Usuarios;
 import co.edu.uniajc.utils.IValidate;
