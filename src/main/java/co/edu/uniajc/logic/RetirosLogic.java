@@ -15,7 +15,7 @@ import co.edu.uniajc.model.Usuarios;
 import co.edu.uniajc.utils.IValidate;
 
 @Service
-@Scope("singleton")
+@Scope("prototype")
 public class RetirosLogic implements IRetirosLogic {
 
 	@Autowired
@@ -38,9 +38,6 @@ public class RetirosLogic implements IRetirosLogic {
 		
 		if(validate.validateObject(retiro.getUsuarios()))
 			throw new Exception("El tipo de usuario es obligatorio");
-		
-		if(validate.validateObject(retiro.getCuentas()))
-			throw new Exception("El nombre es obligatorio");
 		
 		if(validate.validateString(retiro.getRetDescripcion()))
 			throw new Exception("La descripcion es obligatoria");
@@ -92,17 +89,17 @@ public class RetirosLogic implements IRetirosLogic {
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
-	public void delete(Retiros retiro) throws Exception {
+	public void delete(RetirosId retiroId) throws Exception {
 		
-		if(validate.validateObject(retiro))
+		if(validate.validateObject(retiroId))
 			throw new Exception("El retiro no exite");
 		
-		Retiros ret = retirosDAO.consultarPorId(retiro.getId());
+		Retiros ret = retirosDAO.consultarPorId(retiroId);
 		
 		if(validate.validateObject(ret))
 			throw new Exception("El retiro no exite");
 		
-		retirosDAO.delete(retiro);
+		retirosDAO.delete(ret);
 
 	}
 

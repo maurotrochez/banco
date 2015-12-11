@@ -39,9 +39,11 @@ public class RetirosDAO implements IRetirosDAO{
 	}
 
 	@Override
-	@Transactional
+//	@Transactional
 	public Retiros consultarPorId(RetirosId retiroId) throws Exception {
-		return (Retiros)sessionFactory.getCurrentSession().get(Retiros.class, retiroId);
+		Retiros ret = null;
+		ret = (Retiros)sessionFactory.getCurrentSession().get(Retiros.class, retiroId);
+		return ret;
 	}
 
 	@SuppressWarnings("unchecked")
